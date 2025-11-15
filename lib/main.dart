@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Aplikasi Tugas & Portfolio',
+      title: 'Dashboard_Tugas_Pemrograman_Mobile',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
         useMaterial3: true,
@@ -32,13 +32,13 @@ class MyApp extends StatelessWidget {
       // 📌 Semua routes aplikasi
       routes: {
         // ===== Menu Tugas Lama =====
-        '/tugas_baru': (_) => const ProfilMahasiswaPage(),
+        '/tugas_baru': (_) => const TugasBaru(),
         '/portfolio': (_) => const CookingPortfolioPage(),
 
         // ===== Menu Quiz Flutter =====
         '/quiz1': (_) => const GridProdukPage(),
-        '/quiz2': (_) => const ProfilMahasiswaPage2(),
-        '/quiz3': (_) => const Soal3KontakPage(),
+        '/quiz2': (_) => const Quiz2KartuProfil(),
+        '/quiz3': (_) => const Quiz3Wrapper(),
         '/quiz4': (_) => const Quiz4Wrapper(),
         '/quiz5': (_) => const AnalisisPage(),
       },

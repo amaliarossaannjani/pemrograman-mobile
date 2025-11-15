@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 void main() {
-  runApp(const MyApp());
+  runApp(const TugasBaru());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class TugasBaru extends StatelessWidget {
+  const TugasBaru({super.key});
 
   @override
   Widget build(BuildContext context) {

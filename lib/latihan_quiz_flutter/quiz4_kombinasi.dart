@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // ==========================
-// APLIKASI WRAPPER QUIZ 4 (Perbaikan: TIDAK ADA MaterialApp di sini!)
+// APLIKASI WRAPPER QUIZ 4
 // ==========================
 class Quiz4Wrapper extends StatefulWidget {
   const Quiz4Wrapper({super.key});
@@ -11,8 +11,7 @@ class Quiz4Wrapper extends StatefulWidget {
 }
 
 class _Quiz4WrapperState extends State<Quiz4Wrapper> {
-  // State untuk mengelola Dark/Light Mode
-  ThemeMode _themeMode = ThemeMode.light; 
+  ThemeMode _themeMode = ThemeMode.light;
 
   void _toggleTheme() {
     setState(() {
@@ -22,18 +21,12 @@ class _Quiz4WrapperState extends State<Quiz4Wrapper> {
 
   @override
   Widget build(BuildContext context) {
-    // FIX UTAMA: 
-    // Menggunakan Builder untuk mendapatkan konteks tema yang benar 
-    // yang akan diwarisi dari MyApp di atas, dan kemudian memaksa 
-    // tema yang diinginkan melalui Theme() widget
-    
-    // Kita akan menggunakan tema dari MyApp, tetapi menyesuaikan ThemeMode-nya
-    final currentTheme = _themeMode == ThemeMode.dark 
+    final currentTheme = _themeMode == ThemeMode.dark
         ? ThemeData.dark().copyWith(
             colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF42A5F5), brightness: Brightness.dark),
             scaffoldBackgroundColor: const Color(0xFF121212),
             cardColor: const Color(0xFF1E1E1E),
-          ) 
+          )
         : ThemeData.light().copyWith(
             colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF42A5F5), brightness: Brightness.light),
             scaffoldBackgroundColor: const Color(0xFFE1F5FE),
@@ -41,14 +34,13 @@ class _Quiz4WrapperState extends State<Quiz4Wrapper> {
 
     return Theme(
       data: currentTheme,
-      // Menggunakan Builder untuk memastikan konteksnya benar saat men-render Dashboard
       child: Builder(
         builder: (context) {
           return Quiz4DashboardPage(
-            onToggleTheme: _toggleTheme, 
-            themeMode: _themeMode
+            onToggleTheme: _toggleTheme,
+            themeMode: _themeMode,
           );
-        }
+        },
       ),
     );
   }
@@ -61,8 +53,7 @@ class Quiz4DashboardPage extends StatelessWidget {
   final VoidCallback onToggleTheme;
   final ThemeMode themeMode;
 
-  const Quiz4DashboardPage(
-      {super.key, required this.onToggleTheme, required this.themeMode});
+  const Quiz4DashboardPage({super.key, required this.onToggleTheme, required this.themeMode});
 
   void _showAlert(BuildContext context, String title) {
     showDialog(
@@ -73,7 +64,7 @@ class Quiz4DashboardPage extends StatelessWidget {
           content: Text('$title diklik!'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(dialogContext), 
+              onPressed: () => Navigator.pop(dialogContext),
               child: const Text('OK'),
             )
           ],
@@ -99,7 +90,7 @@ class Quiz4DashboardPage extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(dialogContext), 
+              onPressed: () => Navigator.pop(dialogContext),
               child: const Text('Tutup'),
             )
           ],
@@ -121,29 +112,18 @@ class Quiz4DashboardPage extends StatelessWidget {
         foregroundColor: isDarkMode ? Colors.white : Colors.black,
         elevation: 2,
         toolbarHeight: 50,
-        
-        // leading: IconButton disarankan dihapus, karena Navigator.pushNamed 
-        // akan otomatis menambahkannya. Namun, untuk memastikan fungsi back 
-        // yang eksplisit seperti permintaan Anda:
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), 
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Ini akan kembali ke MainMenuScreen karena sekarang berada di tumpukan navigasi yang sama.
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
+            if (Navigator.canPop(context)) Navigator.pop(context);
           },
         ),
-        
         actions: [
           IconButton(
-            icon: Icon(
-              isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
-              color: isDarkMode ? Colors.yellow : Colors.blueGrey,
-            ),
+            icon: Icon(isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
+                color: isDarkMode ? Colors.yellow : Colors.blueGrey),
             onPressed: onToggleTheme,
-            tooltip:
-                isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+            tooltip: isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
           ),
         ],
       ),
@@ -165,7 +145,7 @@ class Quiz4DashboardPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 75, 
+              height: 75,
               child: Row(
                 children: [
                   Expanded(
@@ -208,88 +188,81 @@ class Quiz4DashboardPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            
-            // Card Info Profil Mahasiswa
+
+            // Card Info Profil Mahasiswa dengan ripple effect
             Expanded(
               flex: 2,
-              child: GestureDetector(
-                onTap: () => _showMahasiswaDetail(context),
-                child: Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Row(
-                      children: [
-                        Stack(
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: isDarkMode
-                                  ? Colors.blue.shade900
-                                  : const Color(0xFFBBDEFB),
-                              child: Icon(Icons.person_pin,
-                                  size: 35, color: primaryColor),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: isDarkMode
-                                          ? const Color(0xFF1E1E1E)
-                                          : Colors.white,
-                                      width: 2),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () => _showMahasiswaDetail(context),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Row(
+                        children: [
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: isDarkMode ? Colors.blue.shade900 : const Color(0xFFBBDEFB),
+                                child: Icon(Icons.person_pin, size: 35, color: primaryColor),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
+                                        width: 2),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 12),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Amalia Rossa",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: isDarkMode ? Colors.white : Colors.black,
+                            ],
+                          ),
+                          const SizedBox(width: 12),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Amalia Rossa",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDarkMode ? Colors.white : Colors.black,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "Ketuk untuk Detail",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: isDarkMode
-                                      ? Colors.grey
-                                      : Colors.grey.shade700),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Icon(Icons.arrow_forward_ios,
-                            size: 16,
-                            color: isDarkMode
-                                ? Colors.grey.shade600
-                                : Colors.grey),
-                      ],
+                              const SizedBox(height: 4),
+                              Text(
+                                "Ketuk untuk Detail",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: isDarkMode ? Colors.grey : Colors.grey.shade700),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Icon(Icons.arrow_forward_ios,
+                              size: 16,
+                              color: isDarkMode ? Colors.grey.shade600 : Colors.grey),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-            
             const SizedBox(height: 10),
-            
+
             // List Aktivitas Terakhir
             Expanded(
               flex: 4,
@@ -315,22 +288,19 @@ class Quiz4DashboardPage extends StatelessWidget {
                             subtitle: "2 menit lalu",
                             icon: Icons.edit,
                             iconColor: primaryColor,
-                            onTap: () =>
-                                _showAlert(context, "Mengupdate Profil")),
+                            onTap: () => _showAlert(context, "Mengupdate Profil")),
                         _AktivitasItem(
                             title: "Melihat Produk Baru",
                             subtitle: "10 menit lalu",
                             icon: Icons.shopping_bag,
                             iconColor: primaryColor,
-                            onTap: () =>
-                                _showAlert(context, "Melihat Produk Baru")),
+                            onTap: () => _showAlert(context, "Melihat Produk Baru")),
                         _AktivitasItem(
                             title: "Menghubungi Kontak",
                             subtitle: "30 menit lalu",
                             icon: Icons.phone,
                             iconColor: primaryColor,
-                            onTap: () =>
-                                _showAlert(context, "Menghubungi Kontak")),
+                            onTap: () => _showAlert(context, "Menghubungi Kontak")),
                       ],
                     ),
                   ),
@@ -354,10 +324,7 @@ class _KategoriItem extends StatelessWidget {
   final Color iconColor;
 
   const _KategoriItem(
-      {required this.icon,
-      required this.label,
-      required this.onTap,
-      required this.iconColor});
+      {required this.icon, required this.label, required this.onTap, required this.iconColor});
 
   @override
   Widget build(BuildContext context) {
@@ -365,22 +332,22 @@ class _KategoriItem extends StatelessWidget {
 
     return Card(
       elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), 
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(4.0), 
+          padding: const EdgeInsets.all(4.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 28, color: iconColor), 
-              const SizedBox(height: 2), 
+              Icon(icon, size: 28, color: iconColor),
+              const SizedBox(height: 2),
               Text(
                 label,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 10, 
+                  fontSize: 10,
                   color: isDarkMode ? Colors.white70 : Colors.black87,
                 ),
               ),
@@ -402,13 +369,8 @@ class _AktivitasItem extends StatelessWidget {
   final VoidCallback onTap;
   final Color iconColor;
 
-  const _AktivitasItem({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.onTap,
-    required this.iconColor,
-  });
+  const _AktivitasItem(
+      {required this.title, required this.subtitle, required this.icon, required this.onTap, required this.iconColor});
 
   @override
   Widget build(BuildContext context) {
@@ -419,27 +381,18 @@ class _AktivitasItem extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4),
         onTap: onTap,
         leading: Icon(icon, color: iconColor),
         title: Text(
           title,
-          style: TextStyle(
-            fontSize: 14,
-            color: isDarkMode ? Colors.white : Colors.black87,
-          ),
+          style: TextStyle(fontSize: 14, color: isDarkMode ? Colors.white : Colors.black87),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(
-            fontSize: 12,
-            color: isDarkMode ? Colors.grey : Colors.grey.shade700,
-          ),
+          style: TextStyle(fontSize: 12, color: isDarkMode ? Colors.grey : Colors.grey.shade700),
         ),
-        trailing: Icon(Icons.arrow_forward_ios,
-            size: 14,
-            color: isDarkMode ? Colors.grey.shade600 : Colors.grey.shade600),
+        trailing: Icon(Icons.arrow_forward_ios, size: 14, color: isDarkMode ? Colors.grey.shade600 : Colors.grey.shade600),
       ),
     );
   }
